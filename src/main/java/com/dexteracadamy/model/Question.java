@@ -10,8 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 
@@ -27,11 +26,10 @@ public class Question {
 	private String questionNumber;
 	private String question;
 
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
 	private List<Answer> answers;
 
-	@JsonManagedReference
 	@OneToOne
 	@JoinColumn(name = "answer_id")
 	private Answer correctAnswer;
@@ -39,6 +37,16 @@ public class Question {
 	private Boolean success = Boolean.FALSE;
 
 	public Question() {
+	}
+
+	/**
+	 * @param questionNumber
+	 * @param question
+	 */
+	public Question(String questionNumber, String question) {
+		super();
+		this.questionNumber = questionNumber;
+		this.question = question;
 	}
 
 	/**
@@ -130,16 +138,4 @@ public class Question {
 	public void setSuccess(Boolean success) {
 		this.success = success;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "QuestionBank [id=" + id + ", questionNumber=" + questionNumber + ", question=" + question + ", answers="
-				+ answers + ", correctAnswer=" + correctAnswer + ", success=" + success + "]";
-	}
-
 }

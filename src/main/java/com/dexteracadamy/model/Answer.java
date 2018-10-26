@@ -7,8 +7,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 public class Answer {
 
@@ -20,12 +18,10 @@ public class Answer {
 
 	private String option;
 
-	@JsonManagedReference
 	@ManyToOne
 	@JoinColumn(name = "question_id")
 	private Question question;
 
-	@JsonManagedReference
 	@OneToOne(mappedBy = "correctAnswer")
 	private Question questionId;
 
@@ -105,17 +101,6 @@ public class Answer {
 	 */
 	public void setQuestionId(Question questionId) {
 		this.questionId = questionId;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "Answer [id=" + id + ", answer=" + answer + ", option=" + option + ", question=" + question
-				+ ", questionId=" + questionId + "]";
 	}
 
 }
