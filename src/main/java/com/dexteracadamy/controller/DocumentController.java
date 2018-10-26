@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dexteracadamy.model.Answer;
 import com.dexteracadamy.model.Person;
+import com.dexteracadamy.model.Question;
 import com.dexteracadamy.service.IPersonService;
 
 /**
@@ -32,6 +34,29 @@ public class DocumentController {
 	public String uploadFile(@RequestParam("file") MultipartFile file) {
 		personService.parseTextFile(file);
 		return "Success";
+	}
+	
+	@PostMapping("/uploadDocxFile")
+	public List<Question> uploadDocxFile(@RequestParam("file") MultipartFile file) {
+		return personService.parseDocxFile(file);
+	}
+	
+	@GetMapping("/getQuestions/{page}/{size}")
+	public List<Question> getQuestions(@PathVariable int page, @PathVariable int size) {
+		List<Question> questions = personService.getQuestions(page, size);
+		return questions;
+	}
+	
+	@GetMapping("/getAnswers/{page}/{size}")
+	public List<Answer> getAnswers(@PathVariable int page, @PathVariable int size) {
+		List<Answer> answers = personService.getAnswers(page, size);
+		return answers;
+	}
+	
+	@GetMapping("/getAnswerByQuestion/{id}")
+	public List<Answer> getAnswersByQuestion(@PathVariable int id) {
+		List<Answer> answers = personService.getAnswerByQuestion(id);
+		return answers;
 	}
 	
 	@GetMapping("/persons/{page}/{size}")
