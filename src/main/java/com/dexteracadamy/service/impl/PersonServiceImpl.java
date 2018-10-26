@@ -4,10 +4,13 @@
 package com.dexteracadamy.service.impl;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -32,9 +35,8 @@ public class PersonServiceImpl implements IPersonService {
 	@Override
 	public void parseTextFile(MultipartFile file) {
 		try {
-			userRepository.saveAll(readPersonFile(convert(file)));
-		} catch (IOException e) {
-			e.printStackTrace();
+			//userRepository.saveAll(readPersonFile(convert(file)));
+			readDocFile(convert(file));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,5 +66,23 @@ public class PersonServiceImpl implements IPersonService {
 	@Override
 	public List<Person> findAll(int page, int size) {
 		return userRepository.findAll(new PageRequest(page, size)).getContent();
+	}
+
+	public static void readDocFile(File file) {
+		try {
+			FileInputStream fis = new FileInputStream(file.getAbsolutePath());
+
+			XWPFDocument document = new XWPFDocument(fis);
+
+            List<XWPFParagraph> paragraphs = document.getParagraphs();
+
+            for (XWPFParagraph para : paragraphs) {
+                System.out.println(para.getText());
+            }
+            fis.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 }
